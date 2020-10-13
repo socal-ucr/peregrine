@@ -6,3 +6,5 @@ bin/*
 data/*
 !data/citeseer/
 *.png
+.vscode/*
+testMine
