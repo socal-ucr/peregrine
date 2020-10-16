@@ -30,6 +30,9 @@ convert_data: core/convert_data.cc core/DataConverter.o core/utils.o
 	$(CC) -o $(OUTDIR)/$@ $? $(LDFLAGS) $(CFLAGS)
 	##$(CC) -o $(OUTDIR)/$@ $? -L/usr/local/lib -lpthread -latomic -L$(LD_LIBRARY_PATH) -ltbb $(CFLAGS)
 
+mine_pattern: minePattern.cc $(OBJ)
+	$(CC) -o $(OUTDIR)/$@ $? $(LDFLAGS) $(CFLAGS)
+
 bliss:
 	make -C ./core/bliss-0.73
 
