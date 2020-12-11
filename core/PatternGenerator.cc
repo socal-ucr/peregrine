@@ -25,6 +25,19 @@ namespace Peregrine
     return SmallGraph(edge_list);
   }
 
+  SmallGraph PatternGenerator::ring(uint32_t size)
+  {
+    std::vector<std::pair<uint32_t, uint32_t>> edge_list;
+    uint32_t init = 1;
+    for (uint32_t prev = init, curr = init + 1; curr <= size; prev = curr, ++curr)
+    {
+      edge_list.emplace_back(prev, curr);
+    }
+    edge_list.emplace_back(size, init);
+
+    return SmallGraph(edge_list);
+  }
+
   SmallGraph PatternGenerator::star(uint32_t size)
   {
     if (size < 3)

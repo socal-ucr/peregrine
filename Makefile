@@ -6,7 +6,7 @@ OBJ=core/DataGraph.o core/PO.o core/utils.o core/PatternGenerator.o $(ROOT_DIR)/
 OUTDIR=bin/
 CC=g++
 
-all: bliss fsm count test existence-query convert_data
+all: bliss fsm count test existence-query mine_pattern convert_data
 
 core/roaring.o: core/roaring/roaring.c
 	gcc -c core/roaring/roaring.c -o $@ -O3 -Wall -Wextra -Wpedantic -fPIC 
@@ -26,10 +26,10 @@ count: apps/count.cc $(OBJ) bliss
 test: core/test.cc $(OBJ) core/DataConverter.o core/roaring.o bliss
 	$(CC) core/test.cc -DTESTING $(OBJ) core/DataConverter.o core/roaring.o -o $(OUTDIR)/$@ $(BLISS_LDFLAGS) $(LDFLAGS) -lUnitTest++ $(CFLAGS)
 
-convert_data: core/convert_data.cc core/DataConverter.o core/utils.o
-	$(CC) -o $(OUTDIR)/$@ $? $(LDFLAGS) $(CFLAGS)
-
 mine_pattern: minePattern.cc $(OBJ)
+	$(CC) -o $(OUTDIR)/$@ $? $(BLISS_LDFLAGS) $(LDFLAGS) $(CFLAGS)
+
+convert_data: core/convert_data.cc core/DataConverter.o core/utils.o
 	$(CC) -o $(OUTDIR)/$@ $? $(LDFLAGS) $(CFLAGS)
 
 bliss:

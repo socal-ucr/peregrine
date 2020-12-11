@@ -11,6 +11,7 @@ namespace Peregrine
   {
     PatternGenerator();
     static SmallGraph clique(uint32_t sz);
+    static SmallGraph ring(uint32_t sz);
     static SmallGraph star(uint32_t sz);
     static std::vector<SmallGraph> all(uint32_t sz, bool vertex_based, bool anti_edges);
     static std::vector<SmallGraph> extend(const std::vector<SmallGraph> &from, bool vertex_based, bool overwrite_anti_edges = OVERWRITE_ANTI_EDGES);

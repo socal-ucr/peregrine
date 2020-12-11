@@ -1,35 +1,24 @@
 #include <iostream>
-
-#include "core/Options.hh"
-#include "core/utils.hh"
-#include "core/Graph.hh"
-#include "core/PatternGenerator.hh"
-#include "core/PatternMatching.hh"
-#include "Peregrine.hh"
 #include <string>
 
-using namespace Peregrine;
+#include "MinePattern.hh"
 
-SmallGraph generateCyclic(uint32_t size)
+SmallGraph cubemesh()
 {
   std::vector<std::pair<uint32_t, uint32_t>> edge_list;
-  uint32_t init = 1;
-  for (uint32_t prev = init, curr = init + 1; curr <= size; prev = curr, ++curr)
-  {
-    edge_list.emplace_back(prev, curr);
-  }
-  edge_list.emplace_back(size, init);
+  edge_list.emplace_back(1, 2);
+  edge_list.emplace_back(1, 3);
+  edge_list.emplace_back(1, 4);
+  edge_list.emplace_back(1, 5);
+  edge_list.emplace_back(2, 3);
+  edge_list.emplace_back(3, 4);
+  edge_list.emplace_back(4, 8);
+  edge_list.emplace_back(5, 6);
+  edge_list.emplace_back(5, 7);
+  edge_list.emplace_back(5, 8);
+  edge_list.emplace_back(6, 7);
+  edge_list.emplace_back(7, 8);
   return SmallGraph(edge_list);
-}
-
-template <typename T>
-void printResults(T results)
-{
-  for (const auto &[pattern, val] : results)
-    {
-      std::cout << pattern << " " << val << std::endl;
-    }
-
 }
 
 int main(int argc, char **argv)
@@ -45,19 +34,34 @@ int main(int argc, char **argv)
     int patternSize = atoi(argv[1]);
     std::vector<Peregrine::SmallGraph> patternsToMine; // App graph
 
-    patternsToMine.emplace_back(generateCyclic(patternSize)); // 4 -> 1 -> 2 -> 3 -> 4
+    // patternsToMine.emplace_back(PatternGenerator::ring(patternSize)); // 4 -> 1 -> 2 -> 3 -> 4
+    patternsToMine.emplace_back(PatternGenerator::star(patternSize));
+    
 
     std::cout << "\nRunning Match test\n" << std::endl;
 
     size_t nthreads = 1;
     // const auto callback = [](auto &&handle, auto &&match) { handle.map(match.pattern, 1); };
-    const auto callback = [](auto &&handle, auto &&match) { utils::print_vector(match.mapping); };
-    auto results = match<Pattern, uint64_t, ON_THE_FLY, UNSTOPPABLE>(SmallGraph("topoGraph.txt"), patternsToMine, nthreads, callback);
-    printResults(results);
+    const auto callback = [](auto &&handle, auto &&match) {
+      handle.map(match.pattern, 1);
+      utils::store_pattern(match.mapping);
+    };
+    auto results = match<Pattern, uint64_t, AT_THE_END, UNSTOPPABLE>(cubemesh(), patternsToMine, nthreads, callback);
+    auto patterns = utils::get_patterns();
+    std::cout << "Psst..." << std::endl;
+    for (auto pattern : patterns)
+    {
+      for (auto vertex_id : pattern)
+      {
+        std::cout << vertex_id << " ";
+      }
+      std::cout << std::endl;
+    }
+    // printResults(results);
 
     std::cout << "\nRunning Counts test\n" << std::endl;
 
-    auto counts = count(SmallGraph("topoGraph.txt"), patternsToMine, nthreads);
+    auto counts = count(cubemesh(), patternsToMine, nthreads);
     printResults(counts);
   }
 
