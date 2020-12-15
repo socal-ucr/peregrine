@@ -15,7 +15,7 @@
 namespace utils
 {
 
-std::vector<std::vector<uint32_t>> foundPatterns; //populate this with match.mapping.
+extern std::vector<std::vector<uint32_t>> foundPatterns; //populate this with match.mapping.
 
 extern std::mutex logging_mutex;
 typedef unsigned long long timestamp_t;
@@ -74,33 +74,13 @@ void print_vector(const std::vector<T> &v)
     std::cout << std::endl;
 }
 
-void store_pattern(std::vector<uint32_t> v)
-{
-    foundPatterns.emplace_back(v);
-}
+void store_pattern(std::vector<uint32_t> v);
 
-void print_patterns()
-{
-    std::cout << "Printing found patterns" << std::endl;
-    for (auto pattern : foundPatterns)
-    {
-        for (auto vertex_id : pattern)
-        {
-            std::cout << vertex_id << " ";
-        }
-        std::cout << std::endl;
-    }
-}
+void print_patterns();
 
-std::vector<std::vector<uint32_t>> get_patterns()
-{
-  return foundPatterns;
-}
+std::vector<std::vector<uint32_t>> get_patterns();
 
-void clear_patterns()
-{
-    foundPatterns.clear();
-}
+void clear_patterns();
 
 template <typename T>
 void print_set(const std::set<T> &v)

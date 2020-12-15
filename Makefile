@@ -26,8 +26,8 @@ count: apps/count.cc $(OBJ) bliss
 test: core/test.cc $(OBJ) core/DataConverter.o core/roaring.o bliss
 	$(CC) core/test.cc -DTESTING $(OBJ) core/DataConverter.o core/roaring.o -o $(OUTDIR)/$@ $(BLISS_LDFLAGS) $(LDFLAGS) -lUnitTest++ $(CFLAGS)
 
-mine_pattern: minePattern.cc $(OBJ)
-	$(CC) -o $(OUTDIR)/$@ $? $(BLISS_LDFLAGS) $(LDFLAGS) $(CFLAGS)
+mine_pattern: apps/minePattern.cc $(OBJ) bliss
+	$(CC) apps/minePattern.cc $(OBJ) -o $(OUTDIR)/$@ $(BLISS_LDFLAGS) $(LDFLAGS) $(CFLAGS)
 
 convert_data: core/convert_data.cc core/DataConverter.o core/utils.o
 	$(CC) -o $(OUTDIR)/$@ $? $(LDFLAGS) $(CFLAGS)

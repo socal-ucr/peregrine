@@ -47,6 +47,7 @@ int main(int argc, char **argv)
       utils::store_pattern(match.mapping);
     };
     auto results = match<Pattern, uint64_t, AT_THE_END, UNSTOPPABLE>(cubemesh(), patternsToMine, nthreads, callback);
+    utils::print_patterns();
     auto patterns = utils::get_patterns();
     std::cout << "Psst..." << std::endl;
     for (auto pattern : patterns)
