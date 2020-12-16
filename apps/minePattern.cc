@@ -11,12 +11,16 @@ SmallGraph cubemesh()
   edge_list.emplace_back(1, 4);
   edge_list.emplace_back(1, 5);
   edge_list.emplace_back(2, 3);
+  edge_list.emplace_back(2, 4);
+  edge_list.emplace_back(2, 6);
   edge_list.emplace_back(3, 4);
+  edge_list.emplace_back(3, 7);
   edge_list.emplace_back(4, 8);
   edge_list.emplace_back(5, 6);
   edge_list.emplace_back(5, 7);
   edge_list.emplace_back(5, 8);
   edge_list.emplace_back(6, 7);
+  edge_list.emplace_back(6, 8);
   edge_list.emplace_back(7, 8);
   return SmallGraph(edge_list);
 }
@@ -35,7 +39,7 @@ int main(int argc, char **argv)
     std::vector<Peregrine::SmallGraph> patternsToMine; // App graph
 
     // patternsToMine.emplace_back(PatternGenerator::ring(patternSize)); // 4 -> 1 -> 2 -> 3 -> 4
-    patternsToMine.emplace_back(PatternGenerator::star(patternSize));
+    patternsToMine.emplace_back(PatternGenerator::ring(patternSize));
     
 
     std::cout << "\nRunning Match test\n" << std::endl;
